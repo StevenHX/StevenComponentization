@@ -1,0 +1,20 @@
+ext {
+    //android开发版本配置
+    android = [
+            compileSdkVersion: 30,
+            buildToolsVersion: "30.0.1",
+            applicationId    : "com.hx.componentization",
+            minSdkVersion    : 21,
+            targetSdkVersion : 30,
+            versionCode      : 100,
+            versionName      : "1.0.0",
+    ]
+    //androidx配置
+    androidx = []
+    //version配置
+    versions = []
+    //support配置
+    support = []
+    //依赖第三方配置
+    dependencies = []
+}

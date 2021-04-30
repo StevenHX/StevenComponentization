@@ -1,0 +1,119 @@
+apply plugin: 'com.android.library'
+
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
+properties.load( inputStream )
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //阿里路由框架配置
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+                includeCompileClasspath = true
+            }
+        }
+    }
+    buildTypes {
+        release {
+            multiDexKeepProguard file('multidex-config.pro')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String","wxWeChatId",properties.getProperty("wxWeChatId"))
+            buildConfigField("String","wxWeChatSec",properties.getProperty("wxWeChatSec"))
+            buildConfigField("String","buglyAppId",properties.getProperty("buglyAppId"))
+        }
+        debug {
+            multiDexKeepProguard file('multidex-config.pro')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String","wxWeChatId",properties.getProperty("wxWeChatId"))
+            buildConfigField("String","wxWeChatSec",properties.getProperty("wxWeChatSec"))
+            buildConfigField("String","buglyAppId",properties.getProperty("buglyAppId"))
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    buildFeatures {
+        dataBinding  = true
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            if (isBuildModule.toBoolean()) {
+                //独立运行
+                manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+            } else {
+                //合并到宿主
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                resources {
+                    //正式版本时，排除alone文件夹下所有调试文件
+                    exclude 'src/main/alone/*'
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api 'com.android.support:multidex:1.0.3'
+    api 'com.google.android.material:material:1.2.1'
+    // 阿里路由
+    api 'com.alibaba:arouter-api:1.4.1'
+    annotationProcessor'com.alibaba:arouter-compiler:1.2.2'
+    //banner
+    api 'com.youth.banner:banner:2.1.0'
+    //gson
+    api 'com.google.code.gson:gson:2.8.6'
+    //logger
+    api 'com.orhanobut:logger:2.1.1'
+    //Retrofit+okHttp3
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    api 'com.squareup.okhttp3:okhttp:3.12.1'
+    //Rxjava
+    api 'io.reactivex.rxjava2:rxjava:2.2.10'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    //Glide
+    api 'com.github.bumptech.glide:glide:4.11.0'
+    //约束布局
+    api 'androidx.constraintlayout:constraintlayout:2.0.4'
+    //bigkoo picker
+    api 'com.contrarywind:Android-PickerView:4.1.8'
+    // 沉浸式库
+    api 'com.gyf.immersionbar:immersionbar:3.0.0'
+    // 微信
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.5.6'
+    // ali支付
+    api(name: 'alipaySdk-15.6.8-20191021122455-noUtdid', ext: 'aar')
+    // bugly
+    api 'com.tencent.bugly:crashreport_upgrade:1.4.2'
+    api 'com.tencent.tinker:tinker-android-lib:1.9.9'
+    // 极光推送
+    api 'cn.jiguang.sdk:jpush:3.6.0'
+    api 'cn.jiguang.sdk:jcore:2.3.4'
+    // 骨架屏
+    api 'com.ethanhua:skeleton:1.1.2'
+    api 'io.supercharge:shimmerlayout:2.1.0'
+    // xPopUp
+    api 'com.lxj:xpopup:2.2.13'
+    // adapter
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    // navigation-fragment
+    api "androidx.navigation:navigation-fragment:2.3.1"
+    api "androidx.navigation:navigation-ui:2.3.1"
+}

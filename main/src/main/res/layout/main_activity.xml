@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hx.steven.component.JellyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    android:layout_centerInParent="true"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/id_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="top"
+            android:clipToPadding="false"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:id="@+id/hello"
+            android:text="goto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/hello2"
+            android:text="goto2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <com.hx.steven.component.FlowTag.FlowTagLayout
+            android:id="@+id/color_flow_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.hx.steven.component.ProgressBarView
+            android:id="@+id/pbView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/selectPhoto"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"/>
+
+    </LinearLayout>
+
+
+
+</com.hx.steven.component.JellyScrollView>
