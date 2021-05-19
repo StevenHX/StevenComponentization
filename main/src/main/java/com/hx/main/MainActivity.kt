@@ -6,11 +6,14 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.hx.steven.activity.BaseActivity
 import com.hx.steven.component.ProgressBarView
 import com.hx.steven.constant.Constants
+import com.hx.steven.di.Girl
 import com.hx.steven.util.BarColorUtils
 import com.hx.steven.viewpageTransformer.ScaleInTransformer
+import org.koin.android.ext.android.inject
 
 @Route(path = Constants.A_MAIN)
 class MainActivity : BaseActivity() {
+    private val girl1 by inject<Girl>()
     lateinit var viewPager: ViewPager
     lateinit var pbView: ProgressBarView
     private var adapter: PageAdapter? = null
@@ -41,6 +44,9 @@ class MainActivity : BaseActivity() {
         pbView.setMax(100)
         pbView.setProgress(43f)
         BarColorUtils.setBarColor(this, "#C1FFC1", true)
+        girl1.userName = "新垣结衣"
+        girl1.age=18
+        System.out.println(girl1.info())
     }
 
     override fun onDestroy() {
