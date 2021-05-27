@@ -8,7 +8,7 @@ import com.hx.steven.app.BaseApplication;
 public class UnitConverter {
     public static DisplayMetrics getDisplayMetrics(){
 
-        return BaseApplication.getAppContext().getResources().getDisplayMetrics();
+        return BaseApplication.Companion.getAppContext().getResources().getDisplayMetrics();
     }
 
     public static float dpToPx(float dp) {

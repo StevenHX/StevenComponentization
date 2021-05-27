@@ -67,7 +67,7 @@ public class AppUtils {
 
     public static AppInfo getPackages(String packageName) {
         // 获取已经安装的所有应用, PackageInfo　系统类，包含应用信息
-        List<PackageInfo> packages = BaseApplication.getAppContext().getPackageManager().getInstalledPackages(0);
+        List<PackageInfo> packages = BaseApplication.Companion.getAppContext().getPackageManager().getInstalledPackages(0);
         AppInfo temp = null;
         for (int i = 0; i < packages.size(); i++) {
             PackageInfo packageInfo = packages.get(i);
@@ -76,7 +76,7 @@ public class AppUtils {
                 AppInfo appInfo = new AppInfo();
                 appInfo.setAppName(
                         packageInfo.applicationInfo.loadLabel(
-                                BaseApplication.getAppContext().getPackageManager()).toString());//获取应用名称
+                                BaseApplication.Companion.getAppContext().getPackageManager()).toString());//获取应用名称
                 appInfo.setPackageName(packageInfo.packageName); //获取应用包名，可用于卸载和启动应用
                 appInfo.setVersionName(packageInfo.versionName);//获取应用版本名
                 appInfo.setVersionCode(packageInfo.versionCode);//获取应用版本号

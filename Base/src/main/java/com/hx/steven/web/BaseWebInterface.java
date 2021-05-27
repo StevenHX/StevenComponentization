@@ -48,7 +48,7 @@ public class BaseWebInterface {
             String text = param.get("text");
 
             ClipData clip = ClipData.newPlainText("label", text);
-            ClipboardManager clipboardManager = (ClipboardManager) BaseApplication.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipboardManager clipboardManager = (ClipboardManager) BaseApplication.Companion.getAppContext().getSystemService(Context.CLIPBOARD_SERVICE);
             clipboardManager.setPrimaryClip(clip);
 
             params.put("result", 1);
@@ -71,7 +71,7 @@ public class BaseWebInterface {
         Logger.d("getClipText");
         Map<String, Object> params = new HashMap<>();
         try {
-            ClipboardManager clipboardManager = (ClipboardManager) BaseApplication.getAppContext()
+            ClipboardManager clipboardManager = (ClipboardManager) BaseApplication.Companion.getAppContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clipData = clipboardManager.getPrimaryClip();
             ClipData.Item item = clipData.getItemAt(0);
@@ -226,7 +226,7 @@ public class BaseWebInterface {
     public void getRegistrationId() {
         Logger.d("getRegistrationId");
         try {
-            String registrationId = JPushInterface.getRegistrationID(BaseApplication.getAppContext());
+            String registrationId = JPushInterface.getRegistrationID(BaseApplication.Companion.getAppContext());
             Map params = new HashMap<String, String>();
             params.put("result", 1);
             params.put("data", registrationId);
@@ -244,12 +244,12 @@ public class BaseWebInterface {
     @JavascriptInterface
     public void receivedMsg() {
         Logger.d("receivedMsg");
-        String value = SharedPreferencesUtil.getString(BaseApplication.getAppContext(), "msg_key", "");
+        String value = SharedPreferencesUtil.getString(BaseApplication.Companion.getAppContext(), "msg_key", "");
         HashMap<String, String> map = new HashMap();
         map.put("result", TextUtils.isEmpty(value) ? "0" : "1");
         map.put("data", value);
         WebManager.getInstance().getWebStrategyInterface().callJs(CallBackNameContract.RECEIVED_MSG, JsonHelp.toJson(map));
-        SharedPreferencesUtil.setString(BaseApplication.getAppContext(), "msg_key", "");
+        SharedPreferencesUtil.setString(BaseApplication.Companion.getAppContext(), "msg_key", "");
     }
 
     /**
@@ -277,13 +277,13 @@ public class BaseWebInterface {
                     Uri uri = Uri.parse("tel:" + data);
                     Intent intent = new Intent(Intent.ACTION_DIAL, uri);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    BaseApplication.getAppContext().startActivity(intent);
+                    BaseApplication.Companion.getAppContext().startActivity(intent);
                     break;
                 case "web":
                     uri = Uri.parse(data);
                     intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    BaseApplication.getAppContext().startActivity(intent);
+                    BaseApplication.Companion.getAppContext().startActivity(intent);
                     break;
             }
         }catch (Exception e) {

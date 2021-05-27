@@ -9,6 +9,7 @@ public class AppInitBuilder {
     private final boolean isInitWXSDK;
     private final boolean isInitBugly;
     private final boolean isInitJpush;
+    private final boolean isInitOkGo;
 
     private AppInitBuilder(Builder builder) {
         this.isInitLogger = builder.isInitLogger;
@@ -16,13 +17,16 @@ public class AppInitBuilder {
         this.isInitWXSDK = builder.isInitWXSDK;
         this.isInitBugly = builder.isInitBugly;
         this.isInitJpush = builder.isInitJpush;
+        this.isInitOkGo = builder.isInitOkGo;
     }
-    public static class Builder{
+
+    public static class Builder {
         private boolean isInitLogger;
         private boolean isInitX5;
         private boolean isInitWXSDK;
         private boolean isInitBugly;
         private boolean isInitJpush;
+        private boolean isInitOkGo;
 
         public Builder setInitLogger(boolean initLogger) {
             this.isInitLogger = initLogger;
@@ -49,7 +53,12 @@ public class AppInitBuilder {
             return this;
         }
 
-        public AppInitBuilder build(){
+        public Builder setOkGo(boolean isInitOkGo) {
+            this.isInitOkGo = isInitOkGo;
+            return this;
+        }
+
+        public AppInitBuilder build() {
             return new AppInitBuilder(this);
         }
     }
@@ -72,5 +81,9 @@ public class AppInitBuilder {
 
     public boolean isInitJpush() {
         return isInitJpush;
+    }
+
+    public boolean isInitOkGo() {
+        return isInitOkGo;
     }
 }

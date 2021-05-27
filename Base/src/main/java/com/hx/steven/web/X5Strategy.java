@@ -34,7 +34,7 @@ public class X5Strategy implements WebStrategyInterface {
         webSetting.setTextZoom(100);
         //启用数据库
         webSetting.setDatabaseEnabled(true);
-        String dir = BaseApplication.getAppContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        String dir = BaseApplication.Companion.getAppContext().getDir("database", Context.MODE_PRIVATE).getPath();
         //设置定位的数据库路径
         webSetting.setGeolocationDatabasePath(dir);
         //启用地理定位

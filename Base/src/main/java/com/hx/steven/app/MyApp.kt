@@ -11,30 +11,27 @@ import org.koin.core.context.startKoin
  * Created by user on 2018/1/15.
  */
 class MyApp : BaseApplication() {
-    override fun getAppInitBuilder(): AppInitBuilder {
-        return AppInitBuilder.Builder()
+
+    override val appInitBuilder: AppInitBuilder
+        get() = AppInitBuilder.Builder()
             .setInitLogger(true)
+            .setOkGo(true)
             .build()
-    }
 
     override fun onCreate() {
-        super.onCreate()
-//        try {
-//            RetrofitNetManager.getInstance().init("https://www.wanandroid.com");
-//            RetrofitNetManager.getInstance().setApiService(RetrofitNetManager.getInstance().getRetrofit().create(ApiService.class));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        // 初始化ARouter
         if (BuildConfig.DEBUG) {
             ARouter.openLog()
             ARouter.openDebug()
         }
         ARouter.init(this)
+        // 初始化koin
         startKoin {
             androidLogger()
             androidContext(this@MyApp)
             modules(allModule)
         }
+        super.onCreate()
     }
 
     override fun onTerminate() {

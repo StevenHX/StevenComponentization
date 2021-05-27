@@ -1,170 +1,140 @@
-package com.hx.steven.app;
+package com.hx.steven.app
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-
-import androidx.multidex.MultiDex;
-
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.hx.steven.BuildConfig;
-import com.hx.steven.manager.WxManager;
-import com.hx.steven.util.ActivityManagerUtil;
-import com.hx.steven.util.AppUtils;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.FormatStrategy;
-import com.orhanobut.logger.Logger;
-import com.orhanobut.logger.PrettyFormatStrategy;
-import com.tencent.bugly.Bugly;
-import com.tencent.bugly.crashreport.CrashReport;
-import com.tencent.smtt.export.external.TbsCoreSettings;
-import com.tencent.smtt.sdk.QbSdk;
-
-import java.util.HashMap;
-
-import cn.jpush.android.api.JPushInterface;
-
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.os.Bundle
+import android.os.Process
+import android.text.TextUtils
+import android.util.Log
+import androidx.multidex.MultiDex
+import cn.jpush.android.api.JPushInterface
+import com.alibaba.android.arouter.launcher.ARouter
+import com.hx.steven.BuildConfig
+import com.hx.steven.manager.OkGoManager
+import com.hx.steven.manager.WxManager
+import com.hx.steven.util.ActivityManagerUtil
+import com.hx.steven.util.AppUtils
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.FormatStrategy
+import com.orhanobut.logger.Logger
+import com.orhanobut.logger.PrettyFormatStrategy
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.crashreport.CrashReport.UserStrategy
+import com.tencent.smtt.export.external.TbsCoreSettings
+import com.tencent.smtt.sdk.QbSdk
+import com.tencent.smtt.sdk.QbSdk.PreInitCallback
+import org.koin.android.ext.android.inject
+import java.util.*
 
 /**
  * Created by user on 2018/1/15.
  */
-
-public abstract class BaseApplication extends Application {
-    private static final String TAG = "BaseApplication";
-    private static BaseApplication mApp;
-
-    public abstract AppInitBuilder getAppInitBuilder();
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mApp = this;
+abstract class BaseApplication : Application() {
+    abstract val appInitBuilder: AppInitBuilder
+    private val okGoManager by inject<OkGoManager>()
+    override fun onCreate() {
+        super.onCreate()
+        appContext = this
         // 初始化阿里路由
         if (BuildConfig.DEBUG) {
-            ARouter.openLog();
-            ARouter.openDebug();
+            ARouter.openLog()
+            ARouter.openDebug()
         }
-        ARouter.init(this);
-         if (getAppInitBuilder().isInitLogger()) initLogger();
-         if (getAppInitBuilder().isInitX5()) initX5WebView();
-         if (getAppInitBuilder().isInitWXSDK()) WxManager.getInstance().regToWx();
-         if (getAppInitBuilder().isInitBugly()) initBugly();
-         if (getAppInitBuilder().isInitBugly()) initJpush();
-
-        registerActivityLifecycleCallbacks(new SwitchBackgroundCallbacks());
+        ARouter.init(this)
+        if (appInitBuilder.isInitLogger) initLogger()
+        if (appInitBuilder.isInitX5) initX5WebView()
+        if (appInitBuilder.isInitWXSDK) WxManager.getInstance().regToWx()
+        if (appInitBuilder.isInitBugly) initBugly()
+        if (appInitBuilder.isInitBugly) initJpush()
+        if (appInitBuilder.isInitOkGo) okGoManager.init(this)
+        registerActivityLifecycleCallbacks(SwitchBackgroundCallbacks())
     }
 
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        ARouter.getInstance().destroy();
+    override fun onTerminate() {
+        super.onTerminate()
+        ARouter.getInstance().destroy()
     }
 
-    private void initJpush() {
-        JPushInterface.setDebugMode(TextUtils.equals(BuildConfig.BUILD_TYPE, "debug"));
-        JPushInterface.init(this);
+    private fun initJpush() {
+        JPushInterface.setDebugMode(TextUtils.equals(BuildConfig.BUILD_TYPE, "debug"))
+        JPushInterface.init(this)
     }
 
-    private void initBugly() {
+    private fun initBugly() {
         // 获取当前包名
-        String packageName = getPackageName();
+        val packageName = packageName
         // 获取当前进程名
-        String processName = AppUtils.getProcessName(android.os.Process.myPid());
+        val processName = AppUtils.getProcessName(Process.myPid())
         // 设置是否为上报进程
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this);
-        strategy.setUploadProcess(processName == null || processName.equals(packageName));
-        Bugly.init(this, BuildConfig.buglyAppId, TextUtils.equals(BuildConfig.BUILD_TYPE, "debug"), strategy);
+        val strategy = UserStrategy(this)
+        strategy.isUploadProcess = processName == null || processName == packageName
+        Bugly.init(
+            this,
+            BuildConfig.buglyAppId,
+            TextUtils.equals(BuildConfig.BUILD_TYPE, "debug"),
+            strategy
+        )
     }
 
-    private void initLogger() {
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
-                .methodCount(2)         // (Optional) How many method line to show. Default 2
-                .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
-                .tag("StevenBase")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
-                .build();
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+    private fun initLogger() {
+        val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
+            .showThreadInfo(true) // (Optional) Whether to show thread info or not. Default true
+            .methodCount(2) // (Optional) How many method line to show. Default 2
+            .methodOffset(7) // (Optional) Hides internal method calls up to offset. Default 5
+            .tag("StevenBase") // (Optional) Global tag for every log. Default PRETTY_LOGGER
+            .build()
+        Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
     }
 
-    public void initX5WebView() {
-        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
-
-            @Override
-            public void onViewInitFinished(boolean arg0) {
+    fun initX5WebView() {
+        val cb: PreInitCallback = object : PreInitCallback {
+            override fun onViewInitFinished(arg0: Boolean) {
                 //x5內核初始化完成的回调，为true表示x5内核加载成功，否则表示x5内核加载失败，会自动切换到系统内核。
-                Log.d(TAG, " onViewInitFinished is " + arg0);
+                Log.d(TAG, " onViewInitFinished is $arg0")
             }
 
-            @Override
-            public void onCoreInitFinished() {
-
-            }
-        };
+            override fun onCoreInitFinished() {}
+        }
         // 防止和crosswalk冲突、多进程加快初始化速度
-        HashMap<String, Object> map = new HashMap();
-        map.put(TbsCoreSettings.TBS_SETTINGS_USE_PRIVATE_CLASSLOADER, true);
-        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
-        map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
-        QbSdk.initTbsSettings(map);
+        val map: HashMap<String?, Any?> = HashMap<String?, Any?>()
+        map[TbsCoreSettings.TBS_SETTINGS_USE_PRIVATE_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+        QbSdk.initTbsSettings(map)
         //x5内核初始化接口
-        QbSdk.initX5Environment(BaseApplication.getAppContext(), cb);
+        QbSdk.initX5Environment(appContext, cb)
     }
 
-    /**
-     * 获取application context
-     *
-     * @return
-     */
-    public static BaseApplication getAppContext() {
-        return mApp;
+    private class SwitchBackgroundCallbacks : ActivityLifecycleCallbacks {
+        override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
+            ActivityManagerUtil.getInstance().pushOneActivity(activity)
+        }
+
+        override fun onActivityStarted(activity: Activity) {}
+        override fun onActivityResumed(activity: Activity) {}
+        override fun onActivityPaused(activity: Activity) {}
+        override fun onActivityStopped(activity: Activity) {}
+        override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) {}
+        override fun onActivityDestroyed(activity: Activity) {
+            ActivityManagerUtil.getInstance().popOneActivity(activity)
+        }
     }
 
-    private static class SwitchBackgroundCallbacks implements Application.ActivityLifecycleCallbacks {
+    companion object {
+        private const val TAG = "BaseApplication"
 
-        @Override
-        public void onActivityCreated(Activity activity, Bundle bundle) {
-            ActivityManagerUtil.getInstance().pushOneActivity(activity);
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            ActivityManagerUtil.getInstance().popOneActivity(activity);
-        }
+        /**
+         * 获取application context
+         *
+         * @return
+         */
+        var appContext: BaseApplication? = null
+            private set
     }
 }

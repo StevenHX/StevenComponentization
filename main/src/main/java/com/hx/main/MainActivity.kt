@@ -6,14 +6,15 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.hx.steven.activity.BaseActivity
 import com.hx.steven.component.ProgressBarView
 import com.hx.steven.constant.Constants
-import com.hx.steven.di.Girl
 import com.hx.steven.util.BarColorUtils
 import com.hx.steven.viewpageTransformer.ScaleInTransformer
-import org.koin.android.ext.android.inject
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.callback.StringCallback
+import com.lzy.okgo.model.Response
+import com.orhanobut.logger.Logger
 
 @Route(path = Constants.A_MAIN)
 class MainActivity : BaseActivity() {
-    private val girl1 by inject<Girl>()
     lateinit var viewPager: ViewPager
     lateinit var pbView: ProgressBarView
     private var adapter: PageAdapter? = null
@@ -44,9 +45,19 @@ class MainActivity : BaseActivity() {
         pbView.setMax(100)
         pbView.setProgress(43f)
         BarColorUtils.setBarColor(this, "#C1FFC1", true)
-        girl1.userName = "新垣结衣"
-        girl1.age=18
-        System.out.println(girl1.info())
+
+        OkGo.get<String>("https://www.wanandroid.com/article/list/0/json")
+            .tag(this)
+            .execute(object : StringCallback() {
+                override fun onSuccess(response: Response<String>?) {
+                   Logger.d(response)
+                }
+
+                override fun onError(response: Response<String>?) {
+                    super.onError(response)
+                    Logger.e(response?.message())
+                }
+            })
     }
 
     override fun onDestroy() {

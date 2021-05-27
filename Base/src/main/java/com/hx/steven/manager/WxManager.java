@@ -39,6 +39,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class WxManager {
     private static final String TAG = "WxManager";
@@ -75,9 +76,9 @@ public class WxManager {
 
     public void regToWx() {
         // 通过WXAPIFactory工厂，获取IWXAPI的实例
-        api = WXAPIFactory.createWXAPI(BaseApplication.getAppContext(), wxWeChatId);
+        api = WXAPIFactory.createWXAPI(Objects.requireNonNull(BaseApplication.Companion.getAppContext()), wxWeChatId);
         //建议动态监听微信启动广播进行注册到微信
-        BaseApplication.getAppContext().registerReceiver(new BroadcastReceiver() {
+        BaseApplication.Companion.getAppContext().registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // 将该app注册到微信
@@ -255,7 +256,7 @@ public class WxManager {
                     Bitmap bmp = BitmapFactory.decodeByteArray(result, 0, result.length);
                     executeShareImag(bmp, scene);
                 } else {
-                    Toast.makeText(BaseApplication.getAppContext(), "图片分享失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BaseApplication.Companion.getAppContext(), "图片分享失败", Toast.LENGTH_SHORT).show();
                 }
             }));
         }
@@ -343,7 +344,7 @@ public class WxManager {
                 //调用api接口，发送数据到微信
                 getApi().sendReq(req);
             } else {
-                Toast.makeText(BaseApplication.getAppContext(), "网页分享失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BaseApplication.Companion.getAppContext(), "网页分享失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -358,7 +359,7 @@ public class WxManager {
                 if (isSuccess) {
                     executeShareMiniProgram(result, bean);
                 } else {
-                    Toast.makeText(BaseApplication.getAppContext(), "小程序分享失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BaseApplication.Companion.getAppContext(), "小程序分享失败", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -391,7 +392,7 @@ public class WxManager {
      * 微信支付
      */
     public void wxPay(String payInfo) {
-        wxPay = new WXPay(BaseApplication.getAppContext());
+        wxPay = new WXPay(BaseApplication.Companion.getAppContext());
         Map<String, Object> maps = new HashMap<>();
         maps.put("data", payInfo);
         wxPay.setDataMap(maps);

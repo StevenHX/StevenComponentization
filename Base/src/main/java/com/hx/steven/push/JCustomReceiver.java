@@ -43,7 +43,7 @@ public class JCustomReceiver extends JPushMessageReceiver {
     @Override
     public void onNotifyMessageArrived(Context context, NotificationMessage message) {
         Log.e(TAG, "[onNotifyMessageArrived] " + message);
-        SharedPreferencesUtil.setString(BaseApplication.getAppContext(), "msg_key", message.notificationExtras);
+        SharedPreferencesUtil.setString(BaseApplication.Companion.getAppContext(), "msg_key", message.notificationExtras);
     }
 
     @Override

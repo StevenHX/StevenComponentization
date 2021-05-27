@@ -1,5 +1,6 @@
 package com.hx.steven.di
 
+import com.hx.steven.manager.OkGoManager
 import org.koin.dsl.module
 
 /**
@@ -8,8 +9,8 @@ import org.koin.dsl.module
  * @Description 注入的module
  */
 val appModule = module {
-    single() {
-        Girl()
+    single {
+        OkGoManager()
     }
 }
 val factoryModule = module {
