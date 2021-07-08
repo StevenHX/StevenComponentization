@@ -1,6 +1,7 @@
 package com.hx.main
 
 import android.Manifest
+import android.widget.Button
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.hx.steven.activity.BaseActivity
@@ -8,10 +9,7 @@ import com.hx.steven.component.ProgressBarView
 import com.hx.steven.constant.Constants
 import com.hx.steven.util.BarColorUtils
 import com.hx.steven.viewpageTransformer.ScaleInTransformer
-import com.lzy.okgo.OkGo
-import com.lzy.okgo.callback.StringCallback
-import com.lzy.okgo.model.Response
-import com.orhanobut.logger.Logger
+
 
 @Route(path = Constants.A_MAIN)
 class MainActivity : BaseActivity() {
@@ -26,6 +24,7 @@ class MainActivity : BaseActivity() {
         R.drawable.b,
         R.drawable.c
     )
+    private var sheetDialogFragment: MySheetDialog? = null
 
     override fun initView() {
         RequestPermissions(
@@ -41,23 +40,29 @@ class MainActivity : BaseActivity() {
         viewPager.setAdapter(adapter)
         viewPager.setCurrentItem(1)
         /**自定义progressView */
-        pbView = findViewById(R.id.pbView)
-        pbView.setMax(100)
-        pbView.setProgress(43f)
+//        pbView = findViewById(R.id.pbView)
+//        pbView.setMax(100)
+//        pbView.setProgress(43f)
         BarColorUtils.setBarColor(this, "#C1FFC1", true)
 
-        OkGo.get<String>("https://www.wanandroid.com/article/list/0/json")
-            .tag(this)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>?) {
-                   Logger.d(response)
-                }
+//        OkGo.get<String>("https://www.wanandroid.com/article/list/0/json")
+//            .tag(this)
+//            .execute(object : StringCallback() {
+//                override fun onSuccess(response: Response<String>?) {
+//                   Logger.d(response)
+//                }
+//
+//                override fun onError(response: Response<String>?) {
+//                    super.onError(response)
+//                    Logger.e(response?.message())
+//                }
+//            })
 
-                override fun onError(response: Response<String>?) {
-                    super.onError(response)
-                    Logger.e(response?.message())
-                }
-            })
+        var btn1: Button = findViewById(R.id.hello)
+        btn1.setOnClickListener {
+            if (null == sheetDialogFragment) sheetDialogFragment = MySheetDialog()
+            sheetDialogFragment?.show(supportFragmentManager, "dialog")
+        }
     }
 
     override fun onDestroy() {
