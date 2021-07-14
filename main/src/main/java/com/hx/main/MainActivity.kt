@@ -5,10 +5,12 @@ import android.widget.Button
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.hx.steven.activity.BaseActivity
+import com.hx.steven.activity.OnPermissionListener
 import com.hx.steven.component.ProgressBarView
 import com.hx.steven.constant.Constants
 import com.hx.steven.util.BarColorUtils
 import com.hx.steven.viewpageTransformer.ScaleInTransformer
+import com.orhanobut.logger.Logger
 
 
 @Route(path = Constants.A_MAIN)
@@ -28,8 +30,15 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         RequestPermissions(
-            0,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            object : OnPermissionListener {
+                override fun onPermissionGranted() {
+                    Logger.d("onPermissionGranted")
+                }
+
+                override fun onPermissionDenied(deniedList: MutableList<String>?) {
+                    Logger.d(deniedList)
+                }
+            }, Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE
         )
         /**viewPager变换操作 */
@@ -76,4 +85,5 @@ class MainActivity : BaseActivity() {
     init {
         setEnableMultiple(false)
     }
+
 }

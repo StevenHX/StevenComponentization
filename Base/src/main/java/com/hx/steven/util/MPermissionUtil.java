@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * 6.0 运行时权限处理工具类。
  */
+@Deprecated
 public class MPermissionUtil {
 
     private static int mRequestCode = -1;

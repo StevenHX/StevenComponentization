@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +20,7 @@ import com.ethanhua.skeleton.SkeletonScreen;
 import com.hx.steven.R;
 import com.hx.steven.component.MProgressDialog;
 import com.hx.steven.component.MultipleStatusView;
-import com.hx.steven.util.MPermissionUtil;
+import com.permissionx.guolindev.PermissionX;
 
 public abstract class BaseActivity extends AppCompatActivity {
     /**
@@ -139,40 +138,30 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getContentId();
 
     /**
-     * 6.0权限
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        MPermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    /**
      * 设置需要获取的权限
      */
-    public void RequestPermissions(int requestCode, String... permissions) {
-        MPermissionUtil.requestPermissionsResult(this, requestCode, permissions, new MPermissionUtil.OnPermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                permissionsGrant();
-            }
-
-            @Override
-            public void onPermissionDenied() {
-                permissionDenied();
-            }
-        });
+    public void RequestPermissions(OnPermissionListener listener, String... permissions) {
+        PermissionX.init(this)
+                .permissions(permissions)
+                .onExplainRequestReason((scope, deniedList) -> {
+                    scope.showRequestReasonDialog(deniedList, "即将重新申请的权限是程序必须依赖的权限", "我已明白", "取消");
+                })
+                .onForwardToSettings((scope, deniedList) -> {
+                    scope.showForwardToSettingsDialog(deniedList, "您需要去应用程序设置当中手动开启权限", "我已明白", "取消");
+                })
+                .request((allGranted, grantedList, deniedList) -> {
+                    if (allGranted) {
+                        listener.onPermissionGranted();
+                    } else {
+                        listener.onPermissionDenied(deniedList);
+                    }
+                });
     }
 
-    protected void permissionsGrant() {
-    }
 
     /**
      * ===================================================  设置公共方法=============================
      */
-
-    protected void permissionDenied() {
-    }
 
     /**
      * 获取multipleView
@@ -224,7 +213,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return
      */
     public void hideSkeletonScreen() throws Exception {
-        if (skeletonScreen == null) throw  new Exception("skeletonScreen为空");
+        if (skeletonScreen == null) throw new Exception("skeletonScreen为空");
         skeletonScreen.hide();
     }
 

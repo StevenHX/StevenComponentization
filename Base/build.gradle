@@ -70,10 +70,13 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'com.android.support:multidex:1.0.3'
+    // 材料设计库
     api 'com.google.android.material:material:1.2.1'
     // 阿里路由
     api 'com.alibaba:arouter-api:1.4.1'
     annotationProcessor'com.alibaba:arouter-compiler:1.2.2'
+    // 权限库
+    api 'com.permissionx.guolindev:permissionx:1.4.0'
     //banner
     api 'com.youth.banner:banner:2.1.0'
     //gson
