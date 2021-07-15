@@ -1,4 +1,3 @@
 include ':main'
 include ':Base'
 include ':app'
-rootProject.name = "Componentization_Test"

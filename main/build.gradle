@@ -12,6 +12,6 @@ android {
 
 dependencies {
     //组件依赖基础库
-    api project(':Base')
-    annotationProcessor'com.alibaba:arouter-compiler:1.2.2'
+    implementation project(':Base')
+    kapt 'com.alibaba:arouter-compiler:1.5.1'
 }

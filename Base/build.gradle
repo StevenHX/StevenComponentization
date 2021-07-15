@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 Properties properties = new Properties()
 InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
@@ -7,20 +8,12 @@ properties.load( inputStream )
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        //阿里路由框架配置
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-                includeCompileClasspath = true
-            }
-        }
     }
     buildTypes {
         release {
@@ -73,8 +66,7 @@ dependencies {
     // 材料设计库
     api 'com.google.android.material:material:1.2.1'
     // 阿里路由
-    api 'com.alibaba:arouter-api:1.4.1'
-    annotationProcessor'com.alibaba:arouter-compiler:1.2.2'
+    api 'com.alibaba:arouter-api:1.5.1'
     // 权限库
     api 'com.permissionx.guolindev:permissionx:1.4.0'
     //banner

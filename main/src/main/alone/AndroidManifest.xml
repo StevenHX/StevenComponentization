@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         tools:replace="android:label">
         <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/AppLocalLaunchTheme">
+
+        </activity>
+        <activity
             android:name="com.hx.main.MainActivity"
             android:theme="@style/MainIndexTheme">
             <intent-filter>
