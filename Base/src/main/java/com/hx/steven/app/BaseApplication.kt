@@ -46,7 +46,7 @@ abstract class BaseApplication : Application() {
         if (appInitBuilder.isInitX5) initX5WebView()
         if (appInitBuilder.isInitWXSDK) WxManager.getInstance().regToWx()
         if (appInitBuilder.isInitBugly) initBugly()
-        if (appInitBuilder.isInitBugly) initJpush()
+        if (appInitBuilder.isInitJpush) initJpush()
         if (appInitBuilder.isInitOkGo) okGoManager.init(this)
         registerActivityLifecycleCallbacks(SwitchBackgroundCallbacks())
     }

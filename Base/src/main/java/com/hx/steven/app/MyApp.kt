@@ -1,7 +1,5 @@
 package com.hx.steven.app
 
-import com.alibaba.android.arouter.launcher.ARouter
-import com.hx.steven.BuildConfig
 import com.hx.steven.di.allModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -19,12 +17,6 @@ class MyApp : BaseApplication() {
             .build()
 
     override fun onCreate() {
-        // 初始化ARouter
-        if (BuildConfig.DEBUG) {
-            ARouter.openLog()
-            ARouter.openDebug()
-        }
-        ARouter.init(this)
         // 初始化koin
         startKoin {
             androidLogger()
@@ -32,10 +24,5 @@ class MyApp : BaseApplication() {
             modules(allModule)
         }
         super.onCreate()
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        ARouter.getInstance().destroy()
     }
 }

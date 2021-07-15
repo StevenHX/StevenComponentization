@@ -10,6 +10,9 @@ import com.hx.steven.component.ProgressBarView
 import com.hx.steven.constant.Constants
 import com.hx.steven.util.BarColorUtils
 import com.hx.steven.viewpageTransformer.ScaleInTransformer
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.callback.StringCallback
+import com.lzy.okgo.model.Response
 import com.orhanobut.logger.Logger
 
 
@@ -54,18 +57,18 @@ class MainActivity : BaseActivity() {
 //        pbView.setProgress(43f)
         BarColorUtils.setBarColor(this, "#C1FFC1", true)
 
-//        OkGo.get<String>("https://www.wanandroid.com/article/list/0/json")
-//            .tag(this)
-//            .execute(object : StringCallback() {
-//                override fun onSuccess(response: Response<String>?) {
-//                   Logger.d(response)
-//                }
-//
-//                override fun onError(response: Response<String>?) {
-//                    super.onError(response)
-//                    Logger.e(response?.message())
-//                }
-//            })
+        OkGo.get<String>("https://www.wanandroid.com/article/list/0/json")
+            .tag(this)
+            .execute(object : StringCallback() {
+                override fun onSuccess(response: Response<String>?) {
+                   Logger.d(response)
+                }
+
+                override fun onError(response: Response<String>?) {
+                    super.onError(response)
+                    Logger.e(response?.message())
+                }
+            })
 
         var btn1: Button = findViewById(R.id.hello)
         btn1.setOnClickListener {

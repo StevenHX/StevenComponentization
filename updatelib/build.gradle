@@ -3,16 +3,15 @@ android {
     defaultConfig {
         //如果是独立模块，则使用当前组件的包名
         if (isBuildModule.toBoolean()) {
-            applicationId "com.hx.main"
+            applicationId "com.steven.updatetool"
         }
     }
     //统一资源前缀，规范资源引用
-    resourcePrefix "main_"
+    resourcePrefix "update_"
 }
 
 dependencies {
     //组件依赖基础库
     implementation project(':Base')
-    implementation project(path: ':updatelib')
     kapt 'com.alibaba:arouter-compiler:1.5.1'
 }
