@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -30,13 +31,18 @@ android {
     }
     android.applicationVariants.all {
         variant ->
+            def buildType = variant.buildType.name
+            if (buildType == 'release') {
+                def createTimeDay = new Date().format("YYYY-MM-dd", TimeZone.getTimeZone("GMT+08:00"))
+                variant.getPackageApplicationProvider().get().outputDirectory = new File(project.rootDir.absolutePath + "/apks/${buildType}/${createTimeDay}")
+            }
             variant.outputs.all {
                 output ->
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        if (variant.buildType.name == 'release') {
+                        if (buildType == 'release') {
                             outputFileName = "hxComponentization${nowTime()}_release_V${variant.versionName}.apk"
-                        } else if (variant.buildType.name == 'debug') {
+                        } else if (buildType == 'debug') {
                             outputFileName = "hxComponentization${nowTime()}_debug_V${variant.versionName}.apk"
                         }
                     }
@@ -56,29 +62,23 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
-            if (isBuildModule.toBoolean()) {
-                //独立运行
-                manifest.srcFile 'src/main/alone/AndroidManifest.xml'
-            } else {
-                //合并到宿主
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-                resources {
-                    //正式版本时，排除debug文件夹下所有调试文件
-                    exclude 'src/debug/*'
-                }
-            }
         }
     }
     //统一资源前缀，规范资源引用
     resourcePrefix "app_"
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
-    if (!isBuildModule.toBoolean()) {
-        implementation project(path: ':main')
-    } else {
-        implementation project(path: ':Base')
-    }
+    implementation project(path: ':main')
+    implementation project(path: ':login')
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
 static def nowTime() {

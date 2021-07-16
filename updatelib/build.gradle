@@ -1,17 +1,31 @@
-apply from: "../module.build.gradle"
+apply plugin: 'com.android.library'
 android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
     defaultConfig {
-        //如果是独立模块，则使用当前组件的包名
-        if (isBuildModule.toBoolean()) {
-            applicationId "com.steven.updatetool"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    //统一资源前缀，规范资源引用
-    resourcePrefix "update_"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    //组件依赖基础库
-    implementation project(':Base')
-    kapt 'com.alibaba:arouter-compiler:1.5.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

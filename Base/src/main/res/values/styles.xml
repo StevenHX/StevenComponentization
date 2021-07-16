@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="FlyWindowAnimTheme" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/slide_right_to_left</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_left_to_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_left_to_left_in</item>
-        <item name="android:activityCloseExitAnimation">@anim/slide_left_to_right</item>
-    </style>
-
     <style name="NoTitleTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
     </style>
@@ -19,7 +11,13 @@
     </style>
 
     <style name="MainIndexTheme" parent="NoTitleTheme">
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <style name="ImageImmerseTheme" parent="NoTitleTheme">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <!--自定义多状态view-->
@@ -55,13 +53,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
-
-    <!--swipeBack-->
-    <style name="AppTheme.Slide" parent="@style/NoTitleTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-
+    <!-- dialog-->
     <style name="Dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -71,5 +63,12 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <!-- 转场动画-->
+    <style name="FlyWindowAnimTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_right_to_left</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_left_to_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_left_to_left_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_left_to_right</item>
     </style>
 </resources>

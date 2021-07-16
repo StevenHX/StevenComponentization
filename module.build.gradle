@@ -27,7 +27,7 @@ android {
         }
         // jPush配置
         manifestPlaceholders = [
-                JPUSH_PKGNAME: project.getName(),
+                JPUSH_PKGNAME: "com.hx." + project.getName(),
                 JPUSH_APPKEY : "7756d6f8678d967e4be435d7",
                 JPUSH_CHANNEL: "developer-default"
         ]
@@ -68,4 +68,11 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+}
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

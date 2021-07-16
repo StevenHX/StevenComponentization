@@ -4,15 +4,13 @@ import android.Manifest
 import android.widget.Button
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.hx.steven.activity.BaseActivity
 import com.hx.steven.activity.OnPermissionListener
 import com.hx.steven.component.ProgressBarView
 import com.hx.steven.constant.Constants
 import com.hx.steven.util.BarColorUtils
 import com.hx.steven.viewpageTransformer.ScaleInTransformer
-import com.lzy.okgo.OkGo
-import com.lzy.okgo.callback.StringCallback
-import com.lzy.okgo.model.Response
 import com.orhanobut.logger.Logger
 
 
@@ -55,25 +53,26 @@ class MainActivity : BaseActivity() {
 //        pbView = findViewById(R.id.pbView)
 //        pbView.setMax(100)
 //        pbView.setProgress(43f)
-        BarColorUtils.setBarColor(this, "#C1FFC1", true)
+        BarColorUtils.setBarColor(this, "#ffffffff", true)
 
-        OkGo.get<String>("https://www.wanandroid.com/article/list/0/json")
-            .tag(this)
-            .execute(object : StringCallback() {
-                override fun onSuccess(response: Response<String>?) {
-                   Logger.d(response)
-                }
-
-                override fun onError(response: Response<String>?) {
-                    super.onError(response)
-                    Logger.e(response?.message())
-                }
-            })
+//        OkGo.get<String>("https://www.wanandroid.com/article/list/0/json")
+//            .tag(this)
+//            .execute(object : StringCallback() {
+//                override fun onSuccess(response: Response<String>?) {
+//                   Logger.d(response)
+//                }
+//
+//                override fun onError(response: Response<String>?) {
+//                    super.onError(response)
+//                    Logger.e(response?.message())
+//                }
+//            })
 
         var btn1: Button = findViewById(R.id.hello)
         btn1.setOnClickListener {
-            if (null == sheetDialogFragment) sheetDialogFragment = MySheetDialog()
-            sheetDialogFragment?.show(supportFragmentManager, "dialog")
+//            if (null == sheetDialogFragment) sheetDialogFragment = MySheetDialog()
+//            sheetDialogFragment?.show(supportFragmentManager, "dialog")
+            ARouter.getInstance().build(Constants.A_LOGIN).navigation()
         }
     }
 
