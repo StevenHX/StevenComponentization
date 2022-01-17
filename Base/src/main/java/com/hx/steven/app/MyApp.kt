@@ -1,6 +1,7 @@
 package com.hx.steven.app
 
 import com.hx.steven.di.allModule
+import com.hx.steven.util.CrashHandlerUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,6 +15,8 @@ class MyApp : BaseApplication() {
         get() = AppInitBuilder.Builder()
             .setInitLogger(true)
             .setOkGo(true)
+            .setMMKV(true)
+            .setAudio(true)
             .build()
 
     override fun onCreate() {
@@ -23,6 +26,9 @@ class MyApp : BaseApplication() {
             androidContext(this@MyApp)
             modules(allModule)
         }
+
+        val mException: CrashHandlerUtil = CrashHandlerUtil.getInstance()
+        mException.init(this)
         super.onCreate()
     }
 }

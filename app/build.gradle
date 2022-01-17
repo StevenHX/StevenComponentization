@@ -17,16 +17,43 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // jPush配置
         manifestPlaceholders = [
+                VERSION_CODE: versionCode,
+                VERSION_NAME: versionName,
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "7756d6f8678d967e4be435d7",
                 JPUSH_CHANNEL: "developer-default"
         ]
     }
 
+    signingConfigs {
+        release {
+            storeFile file("$rootDir/Mes5Android.jks")
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+        }
+        debug {
+            storeFile file("$rootDir/debug.keystore")
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled true
+            signingConfig signingConfigs.debug
+            proguardFiles 'proguard-rules.pro'
         }
     }
     android.applicationVariants.all {
@@ -41,9 +68,9 @@ android {
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         if (buildType == 'release') {
-                            outputFileName = "hxComponentization${nowTime()}_release_V${variant.versionName}.apk"
+                            outputFileName = "Mes5_Android_release_V${variant.versionName}_${variant.versionCode}.apk"
                         } else if (buildType == 'debug') {
-                            outputFileName = "hxComponentization${nowTime()}_debug_V${variant.versionName}.apk"
+                            outputFileName = "Mes5_Android_debug_V${variant.versionName}_${variant.versionCode}.apk"
                         }
                     }
             }

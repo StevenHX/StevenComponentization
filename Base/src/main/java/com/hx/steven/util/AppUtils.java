@@ -148,6 +148,16 @@ public class AppUtils {
         return result;
     }
 
+    /**
+     * 字符串截取后18位
+     */
+    public static String subString18Length(String originStr) {
+        int length = originStr.length();
+        if(length > 18) {
+            return originStr.substring(length -18,length);
+        }
+        return  originStr;
+    }
 
     /**
      * 直接拨号，需要增加CALL_PHONE权限
@@ -306,5 +316,15 @@ public class AppUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Integer getMetaDataInt(Context context,String metaName) {
+        try {
+            return context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA)
+                    .metaData.getInt(metaName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

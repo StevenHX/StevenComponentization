@@ -31,7 +31,7 @@ public class HeaderView extends LinearLayout implements View.OnClickListener {
 
     private String titleString;//标题文字
     private int titleTvColor;//标题颜色
-    private  boolean showTitle;//显示标题
+    private  boolean showTitle = true;//显示标题
 
     private String rightString;//右侧文字
     private int rightTvColor;//右侧颜色
@@ -68,7 +68,6 @@ public class HeaderView extends LinearLayout implements View.OnClickListener {
         showLeftIcon = a.getBoolean(R.styleable.HeaderView_showLeftIcon,false);
         titleString = a.getString(R.styleable.HeaderView_titleString);
         titleTvColor = a.getColor(R.styleable.HeaderView_titleColor,Color.BLACK);
-        showTitle = a.getBoolean(R.styleable.HeaderView_showTitle,true);
         rightString = a.getString(R.styleable.HeaderView_rightString);
         rightTvColor = a.getColor(R.styleable.HeaderView_rightColor,Color.DKGRAY);
         showRightTv = a.getBoolean(R.styleable.HeaderView_showRightTv,false);

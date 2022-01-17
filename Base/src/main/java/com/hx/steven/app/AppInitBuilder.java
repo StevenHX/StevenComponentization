@@ -10,6 +10,8 @@ public class AppInitBuilder {
     private final boolean isInitBugly;
     private final boolean isInitJpush;
     private final boolean isInitOkGo;
+    private final boolean isInitMMKV;
+    private final boolean isInitAudio;
 
     private AppInitBuilder(Builder builder) {
         this.isInitLogger = builder.isInitLogger;
@@ -18,6 +20,8 @@ public class AppInitBuilder {
         this.isInitBugly = builder.isInitBugly;
         this.isInitJpush = builder.isInitJpush;
         this.isInitOkGo = builder.isInitOkGo;
+        this.isInitMMKV = builder.isInitMMKV;
+        this.isInitAudio = builder.isInitAudio;
     }
 
     public static class Builder {
@@ -27,6 +31,8 @@ public class AppInitBuilder {
         private boolean isInitBugly;
         private boolean isInitJpush;
         private boolean isInitOkGo;
+        private boolean isInitMMKV;
+        private boolean isInitAudio;
 
         public Builder setInitLogger(boolean initLogger) {
             this.isInitLogger = initLogger;
@@ -58,6 +64,16 @@ public class AppInitBuilder {
             return this;
         }
 
+        public Builder setMMKV(boolean isInitMMKV) {
+            this.isInitMMKV = isInitMMKV;
+            return this;
+        }
+
+        public Builder setAudio(boolean isInitAudio) {
+            this.isInitAudio = isInitAudio;
+            return this;
+        }
+
         public AppInitBuilder build() {
             return new AppInitBuilder(this);
         }
@@ -86,4 +102,10 @@ public class AppInitBuilder {
     public boolean isInitOkGo() {
         return isInitOkGo;
     }
+
+    public boolean isInitMMKV() {
+        return isInitMMKV;
+    }
+
+    public boolean isInitAudio() {return  isInitAudio;}
 }

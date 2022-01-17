@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes;
 
 public class UpdateModel {
     private boolean isForce;
+    private int showType;
     private String title;
     private String versionName;
     private int versionCode;
@@ -19,11 +20,12 @@ public class UpdateModel {
 
 
 
-    public UpdateModel(boolean isForce, String title, String versionName,
+    public UpdateModel(boolean isForce, int showType,String title, String versionName,
                        int versionCode, String message, String positiveStr,
                        String downloadUrl, String appId, String appName,
                        String negativeStr, int imgSrc, int bottomBg, String fileMd5) {
         this.isForce = isForce;
+        this.showType = showType;
         this.title = title;
         this.versionName = versionName;
         this.versionCode = versionCode;
@@ -40,6 +42,14 @@ public class UpdateModel {
 
     public UpdateModel() {
 
+    }
+
+    public int getShowType() {
+        return showType;
+    }
+
+    public void setShowType(int showType) {
+        this.showType = showType;
     }
 
     public boolean isForce() {

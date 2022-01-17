@@ -101,11 +101,14 @@ dependencies {
     // navigation-fragment
     api "androidx.navigation:navigation-fragment:2.3.1"
     api "androidx.navigation:navigation-ui:2.3.1"
-
+    // mmkv
+    api 'com.tencent:mmkv-static:1.2.10'
     // Koin AndroidX Scope feature
     api "org.koin:koin-androidx-scope:2.2.0"
     // Koin AndroidX ViewModel feature
     api "org.koin:koin-androidx-viewmodel:2.2.0"
     // Koin AndroidX Fragment Factory (unstable version)
     api "org.koin:koin-androidx-fragment:2.2.0"
+
+    api "org.jetbrains.kotlin:kotlin-reflect:$rootProject.ext.kotlin_version"
 }

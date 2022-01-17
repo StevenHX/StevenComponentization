@@ -1,4 +1,4 @@
-package com.hx.steven.component
+package com.hx.steven.component.sheetDialog
 
 import android.app.Dialog
 import android.graphics.Color
@@ -9,6 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hx.steven.R
+import com.orhanobut.logger.Logger
 
 abstract class SheetDialogFragment : BottomSheetDialogFragment() {
     private var mBehavior: BottomSheetBehavior<*>? = null
@@ -19,7 +20,7 @@ abstract class SheetDialogFragment : BottomSheetDialogFragment() {
         initView(view)
         mBehavior = BottomSheetBehavior.from(view.parent as View)
         val layoutParams = view.layoutParams
-        val height = (dialog.context.resources.displayMetrics.heightPixels * 0.8).toInt()
+        val height = (dialog.context.resources.displayMetrics.heightPixels * getHeightPresent()).toInt()
         layoutParams.height = height
         view.layoutParams = layoutParams
         mBehavior?.peekHeight = height
@@ -50,4 +51,9 @@ abstract class SheetDialogFragment : BottomSheetDialogFragment() {
      * 初始化view
      */
     abstract fun initView(view: View)
+
+    /**
+     * 获取显示高度于屏幕比例
+     */
+    abstract fun getHeightPresent() :Float
 }

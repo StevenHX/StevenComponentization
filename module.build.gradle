@@ -25,12 +25,6 @@ android {
             }
             generateStubs = true
         }
-        // jPush配置
-        manifestPlaceholders = [
-                JPUSH_PKGNAME: "com.hx." + project.getName(),
-                JPUSH_APPKEY : "7756d6f8678d967e4be435d7",
-                JPUSH_CHANNEL: "developer-default"
-        ]
     }
     kotlinOptions {
         jvmTarget = "1.8"

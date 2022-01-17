@@ -204,10 +204,10 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
         try {
             long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
-            String fileName = "crash-" + time + "-" + timestamp + ".log";
+            String fileName = "crash-" + time + "-" + timestamp + ".txt";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 String path = BaseApplication.Companion.getAppContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)+ "/crash/";
-                Logger.d("path=" + path);
+                ToastUtil.showToast(BaseApplication.Companion.getAppContext(),"path=" + path);
                 File dir = new File(path);
                 if (!dir.exists()) {
                     dir.mkdirs();

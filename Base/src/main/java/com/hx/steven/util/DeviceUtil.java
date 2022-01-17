@@ -7,7 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.telephony.TelephonyManager;
 
+import java.lang.reflect.Method;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -197,5 +199,19 @@ public class DeviceUtil {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取手机imei号
+     */
+    public static String getDeviceImei(Context context,int slotId) {
+        try {
+            TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            Method method = manager.getClass().getMethod("getImei", int.class);
+            String imei = (String) method.invoke(manager, slotId);
+            return imei;
+        } catch (Exception e) {
+            return "";
+        }
     }
 }

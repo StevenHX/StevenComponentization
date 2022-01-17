@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 
+import static com.steven.updatetool.UpdateUtil.TYPE_NEW;
+import static com.steven.updatetool.UpdateUtil.TYPE_SIMPLE;
+
 public class UpdateDialog extends Dialog {
     public UpdateDialog(Context context) {
         super(context);
@@ -23,7 +26,9 @@ public class UpdateDialog extends Dialog {
     public static class Builder {
         private Context context;
         private boolean isForce;
+        private int showType;
         private String versionStr;
+        private String title;
         private String message;
         private String positiveButtonText;
         private String negativeButtonText;
@@ -47,6 +52,11 @@ public class UpdateDialog extends Dialog {
             return this;
         }
 
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
         public Builder setMessage(int message) {
             this.message = (String) context.getText(message);
             return this;
@@ -54,6 +64,11 @@ public class UpdateDialog extends Dialog {
 
         public Builder setForce(boolean force) {
             this.isForce = force;
+            return this;
+        }
+
+        public Builder setShowType(int showType) {
+            this.showType = showType;
             return this;
         }
 
@@ -94,7 +109,12 @@ public class UpdateDialog extends Dialog {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             UpdateDialog dialog = new UpdateDialog(context, R.style.Dialog);
-            View layout = inflater.inflate(R.layout.cutom_upgrade_layout2, null);
+            View layout = null;
+            if (showType == TYPE_NEW) {
+                layout = inflater.inflate(R.layout.cutom_upgrade_layout2, null);
+            } else if (showType == TYPE_SIMPLE) {
+                layout = inflater.inflate(R.layout.cutom_upgrade_layout, null);
+            }
             dialog.addContentView(layout, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -107,11 +127,20 @@ public class UpdateDialog extends Dialog {
                                     DialogInterface.BUTTON_POSITIVE));
                 }
             }
-
             if (negativeButtonClickListener != null) {
                 dialog.setOnDismissListener(dialog1 -> {
                     negativeButtonClickListener.onClick(dialog, DialogInterface.BUTTON_NEGATIVE);
                 });
+                if (showType == TYPE_SIMPLE) {
+                    ((TextView) layout.findViewById(R.id.tv_upgrade_cancle)).setText(negativeButtonText);
+                    layout.findViewById(R.id.tv_upgrade_cancle)
+                            .setOnClickListener(v -> negativeButtonClickListener.onClick(dialog,
+                                    DialogInterface.BUTTON_NEGATIVE));
+                }
+            }
+
+            if (title != null && showType == TYPE_SIMPLE) {
+                ((TextView) layout.findViewById(R.id.tv_title)).setText(title);
             }
 
             if (versionStr != null) {
@@ -120,18 +149,20 @@ public class UpdateDialog extends Dialog {
             if (message != null) {
                 ((TextView) layout.findViewById(R.id.tv_upgrade_feature)).setText(message);
             }
-
-            if (imgSrc != 0) {
-                ((ImageView) layout.findViewById(R.id.iv_top)).setImageResource(imgSrc);
-            }
-            if (bottomBg != 0) {
-                ((LinearLayout) layout.findViewById(R.id.ll_bottom)).setBackgroundResource(bottomBg);
+            if (showType == TYPE_NEW) {
+                if (imgSrc != 0) {
+                    ((ImageView) layout.findViewById(R.id.iv_top)).setImageResource(imgSrc);
+                }
+                if (bottomBg != 0) {
+                    ((LinearLayout) layout.findViewById(R.id.ll_bottom)).setBackgroundResource(bottomBg);
+                }
             }
 
             dialog.setContentView(layout);
             dialog.setCanceledOnTouchOutside(false);
             if (isForce) {
                 dialog.setCancelable(false);
+                layout.findViewById(R.id.tv_upgrade_cancle).setVisibility(View.GONE);
             }
 
             return dialog;

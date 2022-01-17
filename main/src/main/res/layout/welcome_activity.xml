@@ -7,17 +7,6 @@
     android:layout_height="match_parent"
     tools:ignore="ResourceName">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/launch_img"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        android:background="@drawable/launch_ad_bg">-->
-<!--    </ImageView>-->
-
 
     <LinearLayout
         android:id="@+id/rootView"
@@ -25,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:background="@color/lightgray"
+        android:background="@drawable/cloud"
         android:paddingBottom="20dp">
 
         <ImageView
@@ -36,29 +25,18 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:src="@mipmap/wtlogo"/>
+            android:src="@mipmap/ic_launcher_round"/>
         <com.hx.steven.component.SuperTextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textColor="@color/white_transparent"
-            android:text="WINGTECH"
+            android:text="StevenAndroid"
             android:textSize="28sp"
             app:dynamicStyle="changeColor"
-            app:selectedColor="@color/white"
+            app:selectedColor="@color/slategray"
             app:duration="100"/>
     </LinearLayout>
-<!--    <TextView-->
-<!--        android:id="@+id/jumpAd"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:layout_marginEnd="32dp"-->
-<!--        android:text="点击跳过"-->
-<!--        android:padding="5dp"-->
-<!--        android:background="@drawable/line_bg"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

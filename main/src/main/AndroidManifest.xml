@@ -4,7 +4,8 @@
     <application>
         <activity
             android:name=".WelcomeActivity"
-            android:theme="@style/AppLocalLaunchTheme">
+            android:theme="@style/AppLocalLaunchTheme"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -13,7 +14,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MainIndexTheme">
+            android:theme="@style/MainIndexTheme"
+            android:launchMode="singleTop">
         </activity>
     </application>
 </manifest>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_app_name">login模块</string>
+    <string name="login_user_name">Please input UserName</string>
+    <string name="login_pwd">Please input PassWord</string>
+    <string name="login_login_btn">Login</string>
+</resources>

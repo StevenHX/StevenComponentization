@@ -20,6 +20,8 @@ public class UpdateUtil {
     private static final String TAG = "UpdateUtil";
     private UpdateDialog updateDialog;
     private boolean isDebug = false;
+    public static final int TYPE_SIMPLE = 0;
+    public static final int TYPE_NEW = 1;
 
     /**
      * @param isDebug 设置调试模式 默认测试模式无法弹窗
@@ -28,6 +30,14 @@ public class UpdateUtil {
         this.isDebug = isDebug;
     }
 
+    /**
+     * 清除dialog
+     */
+    public void dismissDialog(){
+        if(updateDialog != null){
+            updateDialog.dismiss();
+        }
+    }
     /**
      * @param activity
      * @param updateModel      远程配置数据
@@ -40,7 +50,9 @@ public class UpdateUtil {
             if (listener != null) listener.readyToUpGrade();
             updateDialog = new UpdateDialog.Builder(activity)
                     .setForce(updateModel.isForce())
+                    .setShowType(updateModel.getShowType())
                     .setVersion(updateModel.getVersionName())
+                    .setTitle(updateModel.getTitle())
                     .setMessage(updateModel.getMessage())
                     .setImgSrc(updateModel.getImgSrc())
                     .setBottomBg(updateModel.getBottomBg())
@@ -90,6 +102,7 @@ public class UpdateUtil {
                     JSONObject jsonObjectResult = new JSONObject(result);
                     JSONObject jsonObject = jsonObjectResult.getJSONObject("Data");
                     boolean isForce = jsonObject.getBoolean("isForce");
+                    int showType = jsonObject.getInt("showType");
                     String title = jsonObject.getString("title");
                     String versionName = jsonObject.getString("versionName");
                     int versionCode = jsonObject.getInt("versionCode");
@@ -100,7 +113,7 @@ public class UpdateUtil {
                     String appName = jsonObject.getString("appName");
                     String negativeStr = jsonObject.getString("negativeStr");
                     // TODO: 2020/7/25 接受后端传过来的md5
-                    UpdateModel updateModel = new UpdateModel(isForce, title, versionName,
+                    UpdateModel updateModel = new UpdateModel(isForce,showType, title, versionName,
                             versionCode, message, positiveStr, downloadUrl, appId, appName, negativeStr,
                             imgSrc == -1 ? R.drawable.top_bg : imgSrc,
                             bottomBg == -1 ? R.drawable.btn_bg : bottomBg,

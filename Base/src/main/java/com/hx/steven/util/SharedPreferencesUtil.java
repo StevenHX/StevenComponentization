@@ -3,7 +3,7 @@ package com.hx.steven.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
+@Deprecated
 public class SharedPreferencesUtil {
     public static String getString(Context context, String key,
                                    final String defaultValue) {

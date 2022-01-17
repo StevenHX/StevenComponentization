@@ -11,6 +11,7 @@ import androidx.multidex.MultiDex
 import cn.jpush.android.api.JPushInterface
 import com.alibaba.android.arouter.launcher.ARouter
 import com.hx.steven.BuildConfig
+import com.hx.steven.manager.AudioManager
 import com.hx.steven.manager.OkGoManager
 import com.hx.steven.manager.WxManager
 import com.hx.steven.util.ActivityManagerUtil
@@ -21,6 +22,7 @@ import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.crashreport.CrashReport.UserStrategy
+import com.tencent.mmkv.MMKV
 import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
 import com.tencent.smtt.sdk.QbSdk.PreInitCallback
@@ -33,6 +35,7 @@ import java.util.*
 abstract class BaseApplication : Application() {
     abstract val appInitBuilder: AppInitBuilder
     private val okGoManager by inject<OkGoManager>()
+    private val audioManager by inject<AudioManager>()
     override fun onCreate() {
         super.onCreate()
         appContext = this
@@ -48,6 +51,8 @@ abstract class BaseApplication : Application() {
         if (appInitBuilder.isInitBugly) initBugly()
         if (appInitBuilder.isInitJpush) initJpush()
         if (appInitBuilder.isInitOkGo) okGoManager.init(this)
+        if (appInitBuilder.isInitMMKV) MMKV.initialize(this)
+        if (appInitBuilder.isInitAudio) audio = audioManager
         registerActivityLifecycleCallbacks(SwitchBackgroundCallbacks())
     }
 
@@ -136,5 +141,11 @@ abstract class BaseApplication : Application() {
          */
         var appContext: BaseApplication? = null
             private set
+
+        /**
+         * 获取audioManager
+         */
+        var audio: AudioManager? = null
+        private set
     }
 }
