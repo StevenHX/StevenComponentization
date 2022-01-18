@@ -20,8 +20,8 @@ android {
                 VERSION_CODE: versionCode,
                 VERSION_NAME: versionName,
                 JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "7756d6f8678d967e4be435d7",
-                JPUSH_CHANNEL: "developer-default"
+                JPUSH_APPKEY : JPUSH_APPKEY,
+                JPUSH_CHANNEL: JPUSH_CHANNEL
         ]
     }
 

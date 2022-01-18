@@ -5,8 +5,6 @@ android {
         if (isBuildModule.toBoolean()) {
             applicationId "com.hx.login"
         }
-        renderscriptTargetApi 19
-        renderscriptSupportModeEnabled true
     }
     //统一资源前缀，规范资源引用
     resourcePrefix "login_"

@@ -2,10 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-Properties properties = new Properties()
-InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
-properties.load( inputStream )
-
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
@@ -19,16 +15,16 @@ android {
         release {
             multiDexKeepProguard file('multidex-config.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String","wxWeChatId",properties.getProperty("wxWeChatId"))
-            buildConfigField("String","wxWeChatSec",properties.getProperty("wxWeChatSec"))
-            buildConfigField("String","buglyAppId",properties.getProperty("buglyAppId"))
+            buildConfigField("String","wxWeChatId",wxWeChatId)
+            buildConfigField("String","wxWeChatSec",wxWeChatSec)
+            buildConfigField("String","buglyAppId",buglyAppId)
         }
         debug {
             multiDexKeepProguard file('multidex-config.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String","wxWeChatId",properties.getProperty("wxWeChatId"))
-            buildConfigField("String","wxWeChatSec",properties.getProperty("wxWeChatSec"))
-            buildConfigField("String","buglyAppId",properties.getProperty("buglyAppId"))
+            buildConfigField("String","wxWeChatId",wxWeChatId)
+            buildConfigField("String","wxWeChatSec",wxWeChatSec)
+            buildConfigField("String","buglyAppId",buglyAppId)
         }
     }
     compileOptions {
