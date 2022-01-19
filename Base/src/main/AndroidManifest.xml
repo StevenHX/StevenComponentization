@@ -58,9 +58,6 @@
 
         <meta-data android:name="VERSION_CODE" android:value="${VERSION_CODE}"/>
         <meta-data android:name="VERSION_NAME" android:value="${VERSION_NAME}"/>
-        <meta-data android:name="JPUSH_PKGNAME" android:value="${JPUSH_PKGNAME}"/>
-        <meta-data android:name="JPUSH_CHANNEL" android:value="${JPUSH_CHANNEL}"/>
-        <meta-data android:name="JPUSH_APPKEY" android:value="${JPUSH_APPKEY}"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

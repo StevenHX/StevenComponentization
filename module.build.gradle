@@ -25,13 +25,15 @@ android {
             }
             generateStubs = true
         }
-        manifestPlaceholders = [
-                VERSION_CODE: versionCode,
-                VERSION_NAME: versionName,
-                JPUSH_PKGNAME: rootProject.ext.android.applicationId,
-                JPUSH_APPKEY : JPUSH_APPKEY,
-                JPUSH_CHANNEL: JPUSH_CHANNEL
-        ]
+        if (isBuildModule.toBoolean()) {
+            manifestPlaceholders = [
+                    VERSION_CODE: versionCode,
+                    VERSION_NAME: versionName,
+                    JPUSH_PKGNAME: "com.hx." + project.getName(),
+                    JPUSH_APPKEY : JPUSH_APPKEY,
+                    JPUSH_CHANNEL: JPUSH_CHANNEL
+            ]
+        }
     }
     kotlinOptions {
         jvmTarget = "1.8"
