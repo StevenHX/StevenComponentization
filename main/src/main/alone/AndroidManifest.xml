@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hx.main">
+
     <application
         android:name="com.hx.steven.app.MyApp"
         android:allowBackup="true"
@@ -11,7 +12,7 @@
         android:supportsRtl="true"
         tools:replace="android:label">
         <activity
-            android:name="com.hx.main.MainActivity"
+            android:name=".TestActivity"
             android:theme="@style/MainIndexTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,4 +21,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
