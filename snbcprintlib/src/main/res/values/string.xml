@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="paired_device">已配对设备</string>
+    <string name="pps_link_ok">连接成功</string>
+    <string name="pps_link_error">连接异常</string>
+</resources>

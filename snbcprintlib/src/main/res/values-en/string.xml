@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="paired_device">Paired Devices</string>
+    <string name="pps_link_ok">Link Printer Ok</string>
+    <string name="pps_link_error">Link Printer Error</string>
+</resources>
