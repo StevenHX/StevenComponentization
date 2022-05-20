@@ -1,0 +1,77 @@
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+
+task getAPKpath {
+    doLast {
+        def outputFileName = "Mes5_Android_release_V${rootProject.ext.android.versionName}_${rootProject.ext.android.versionCode}.apk"
+        println('----------------------outputFile-------------')
+        println(outputFileName)
+        def createTimeDay = new Date().format("YYYY-MM-dd", TimeZone.getTimeZone("GMT+08:00"))
+        def outApk = new File(project.rootDir.absolutePath + "/apks/release/${createTimeDay}/" + outputFileName)
+        println(outApk.path)
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(outApk)
+            FileChannel channel = fileInputStream.getChannel()
+            MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, outApk.length())
+            MessageDigest md = MessageDigest.getInstance("MD5")
+            md.update(buffer)
+            byte[] src = md.digest()
+            char[] res = new char[src.length << 1]
+            char[] hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'}
+            for (int i = 0, j = 0; i < src.length; i++) {
+                res[j++] = hexDigits[src[i] >>> 4 & 0x0f]
+                res[j++] = hexDigits[src[i] & 0x0f]
+            }
+            def md5 = new String(res)
+            println(md5)
+            def md5File = new File(project.rootDir.absolutePath + "/apks/release/${createTimeDay}/publish.json")
+            md5File.withWriter { w ->
+                StringBuilder  stringBuilder = new StringBuilder()
+                stringBuilder.append("{")
+                stringBuilder.append("\"appId\":")
+                stringBuilder.append("\"com.wt.mes5_android\",")
+                stringBuilder.append("\"appName\":")
+                stringBuilder.append("\"MES5Android.apk\",")
+                stringBuilder.append("\"bottomBg\":")
+                stringBuilder.append("0,")
+                stringBuilder.append("\"downloadUrl\":")
+                stringBuilder.append("\"http://10.119.100.152:58899/" + outputFileName + "\",")
+                stringBuilder.append("\"fileMd5\":")
+                stringBuilder.append("\""+ md5 +"\",")
+                stringBuilder.append("\"imgSrc\":")
+                stringBuilder.append("0,")
+                stringBuilder.append("\"isForce\":")
+                stringBuilder.append("true,")
+                stringBuilder.append("\"message\":")
+                stringBuilder.append("\"1.优化内容.....\\n2.优化功能\",")
+                stringBuilder.append("\"negativeStr\":")
+                stringBuilder.append("\"下次再说\",")
+                stringBuilder.append("\"positiveStr\":")
+                stringBuilder.append("\"立即升级\",")
+                stringBuilder.append("\"showType\":")
+                stringBuilder.append("0,")
+                stringBuilder.append("\"title\":")
+                stringBuilder.append("\"MES5.0\",")
+                stringBuilder.append("\"versionCode\":")
+                stringBuilder.append(rootProject.ext.android.versionCode+",")
+                stringBuilder.append("\"versionName\":")
+                stringBuilder.append("\""+rootProject.ext.android.versionName+"\",")
+                stringBuilder.append("}")
+                w.write(stringBuilder.toString())
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'assembleRelease') {
+        task.finalizedBy getAPKpath
+    }
+}

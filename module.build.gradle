@@ -71,16 +71,6 @@ android {
     buildFeatures {
         dataBinding = true
     }
-    android.applicationVariants.all {
-        variant ->
-            variant.outputs.all {
-                output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                            outputFileName = project.getName() + "V${variant.versionName}_${variant.versionCode}.apk"
-                    }
-            }
-    }
 }
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
