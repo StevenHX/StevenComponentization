@@ -17,5 +17,6 @@
             android:theme="@style/MainIndexTheme"
             android:launchMode="singleTop">
         </activity>
+        <service android:name="com.hx.steven.mina.MinaService"/>
     </application>
 </manifest>

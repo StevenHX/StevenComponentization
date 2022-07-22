@@ -1,6 +1,7 @@
 package com.hx.main
 
 import android.Manifest
+import android.content.Intent
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +14,8 @@ import com.hx.steven.activity.BaseActivity
 import com.hx.steven.activity.OnPermissionListener
 import com.hx.steven.component.DividerItemDecoration
 import com.hx.steven.constant.Constants
+import com.hx.steven.mina.MinaService
+import com.hx.steven.mina.SessionManager
 import com.hx.steven.util.DeviceUtil
 import com.orhanobut.logger.Logger
 import com.tencent.mmkv.MMKV
@@ -58,12 +61,19 @@ class MainActivity : BaseActivity(), OnItemClickListener {
                 }
             }, Manifest.permission.READ_PHONE_STATE
         )
+
+        val intent = Intent(this, MinaService::class.java)
+        startService(intent)
+        Logger.d("connect to server")
     }
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         var name = exampleData?.get(position)?.name
         when (name) {
             "module1" -> {
+                val txt = "11111"
+                SessionManager.getInstance().writeToServer(txt)
+                Logger.d("send message to server ：$txt")
             }
             "module2" -> {
             }
