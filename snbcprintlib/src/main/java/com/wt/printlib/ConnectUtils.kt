@@ -21,6 +21,10 @@ class ConnectUtils {
             return printer == null
         }
 
+        fun setPrintNull() {
+            printer = null
+        }
+
         fun DiscoverDevice(): Set<BluetoothDevice> {
             val blueToothAdapter = BluetoothAdapter.getDefaultAdapter()
                 ?: return mutableSetOf<BluetoothDevice>()
@@ -41,7 +45,7 @@ class ConnectUtils {
                 val printer1 = builder.barPrinter
                 printer = printer1
                 connect = bluetoothConnect1
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 throw Exception()
             }
         }

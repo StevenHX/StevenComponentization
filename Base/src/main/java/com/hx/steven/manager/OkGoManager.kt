@@ -9,7 +9,7 @@ import com.lzy.okgo.cookie.store.DBCookieStore
 import com.lzy.okgo.https.HttpsUtils
 import com.lzy.okgo.https.HttpsUtils.SSLParams
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor
-import com.lzy.okgo.model.HttpHeaders
+import com.tencent.mmkv.MMKV
 import okhttp3.OkHttpClient
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
@@ -30,6 +30,11 @@ class OkGoManager {
         //log颜色级别，决定了log在控制台显示的颜色
         loggingInterceptor.setColorLevel(Level.INFO)
         builder.addInterceptor(loggingInterceptor)
+        builder.addInterceptor { chain ->
+            val token = MMKV.defaultMMKV().decodeString("token", "")
+            val request = chain.request().newBuilder().addHeader("Authorization", token).build()
+            chain.proceed(request)
+        }
 
         //全局的连接超时时间
         builder.connectTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
@@ -44,16 +49,12 @@ class OkGoManager {
         val sslParams2: SSLParams = HttpsUtils.getSslSocketFactory(SafeTrustManager())
         builder.sslSocketFactory(sslParams2.sSLSocketFactory, sslParams2.trustManager)
 
-        val headers = HttpHeaders()
-        headers.put("commonHeaderKey1", "commonHeaderValue1") //header不支持中文，不允许有特殊字符
-        headers.put("commonHeaderKey2", "commonHeaderValue2")
 
         OkGo.getInstance().init(context)                       //必须调用初始化
             .setOkHttpClient(builder.build())               //建议设置OkHttpClient，不设置将使用默认的
             .setCacheMode(CacheMode.NO_CACHE)               //全局统一缓存模式，默认不使用缓存，可以不传
             .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)   //全局统一缓存时间，默认永不过期，可以不传
             .setRetryCount(0)                               //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0
-            .addCommonHeaders(headers)
     }
 
     private class SafeTrustManager : X509TrustManager {
